@@ -1,12 +1,14 @@
 "use client";
 import { Badge } from "./ui/badge";
+import clsx from "clsx";
 
 type BillProps = {
   billValue: 5 | 10 | 20 | 50 | 100 | 200 | 500;
   amountNeeded?: number;
+  right?: boolean;
 };
 
-const PaperBill = ({ billValue, amountNeeded }: BillProps) => {
+const PaperBill = ({ billValue, amountNeeded, right }: BillProps) => {
   const billColors: { [key: number]: string } = {
     5: "bg-gray-200", // Grayish for 5€
     10: "bg-red-200", // Reddish for 10€
@@ -28,7 +30,11 @@ const PaperBill = ({ billValue, amountNeeded }: BillProps) => {
         {typeof amountNeeded === "number" && amountNeeded >= 1 && (
           <Badge
             variant="secondary"
-            className="absolute text-lg font-sans -inset-y-1 -right-2 w-fit h-6"
+            // className="absolute text-lg font-sans -inset-y-1 -right-2 w-fit h-6"
+            className={clsx(
+              "absolute text-lg font-sans -inset-y-1 w-fit h-6",
+              right ? "right-24 text-right" : "-right-4"
+            )}
           >
             x{amountNeeded}
           </Badge>

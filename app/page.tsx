@@ -49,11 +49,9 @@ export default function Home() {
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Menge eingeben:</Label>
             <Input placeholder="€" onChange={handleInput} />
-            {errorMessage && (
-              <p className="text-red-500 max-w-[270px] text-center mx-auto text-sm mt-1">
-                {errorMessage}
-              </p>
-            )}
+            <p className="text-red-500 max-w-[270px] text-center mx-auto text-sm mt-1 h-12">
+              {errorMessage}
+            </p>
           </div>
         </div>
         <DenominationsDisplay denominationsNeeded={denominations} />
