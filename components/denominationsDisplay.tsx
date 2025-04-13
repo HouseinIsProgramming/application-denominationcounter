@@ -12,10 +12,10 @@ interface DenominationsDisplayProps {
 
 // Define valid coin and bill values to match component props
 type CoinValue = 1 | 2;
-type BillValue = 5 | 10 | 20 | 50 | 100 | 200 | 500;
+type BillValue = 5 | 10 | 20 | 50 | 100 | 200 | 500 | "change";
 
 interface DenominationItem {
-  value: CoinValue | BillValue;
+  value: CoinValue | BillValue | "change";
   type: "coin" | "bill";
 }
 
@@ -64,12 +64,14 @@ function DenominationsDisplay({
     { value: 200, type: "bill" },
     { value: 100, type: "bill" },
     { value: 50, type: "bill" },
+    { value: "change", type: "bill" },
   ];
 
   // Function to safely check if a denomination has a value > 0
-  const hasDenomination = (value: number): boolean => {
+  const hasDenomination = (value: number | string): boolean => {
     if (!denominationsNeeded) return false;
-    return (denominationsNeeded[value] ?? 0) > 0;
+    if (value === "change") return (denominationsNeeded.change ?? 0) > 0;
+    return (denominationsNeeded[value as number] ?? 0) > 0;
   };
 
   return (
@@ -84,12 +86,12 @@ function DenominationsDisplay({
           >
             {item.type === "coin" ? (
               <Coin
-                amountNeeded={denominationsNeeded?.[item.value]}
+                amountNeeded={denominationsNeeded?.[item.value as number]}
                 coinValue={item.value as CoinValue}
               />
             ) : (
               <PaperBill
-                amountNeeded={denominationsNeeded?.[item.value]}
+                amountNeeded={denominationsNeeded?.[item.value as number]}
                 billValue={item.value as BillValue}
               />
             )}
@@ -105,11 +107,19 @@ function DenominationsDisplay({
             animate={hasDenomination(item.value) ? "visible" : "hidden"}
             initial="hidden"
           >
-            <PaperBill
-              amountNeeded={denominationsNeeded?.[item.value]}
-              billValue={item.value as BillValue}
-              right={true}
-            />
+            {item.value === "change" ? (
+              <PaperBill
+                amountNeeded={denominationsNeeded?.change}
+                billValue="change"
+                right={true}
+              />
+            ) : (
+              <PaperBill
+                amountNeeded={denominationsNeeded?.[item.value as number]}
+                billValue={item.value as BillValue}
+                right={true}
+              />
+            )}
           </motion.div>
         ))}
       </div>

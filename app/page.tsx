@@ -61,7 +61,7 @@ export default function Home() {
               <br />
               <span className="text-green-500 block">
                 {denominations && totalAmount > 0
-                  ? `Sie benötigen ${totalAmount} Euro Scheinen und Münzen.`
+                  ? `Sie benötigen ${totalAmount} Scheinen und/oder Münzen.`
                   : ""}
               </span>
             </p>
@@ -81,7 +81,7 @@ export default function Home() {
         </a>
         <a
           className="flex items-center gap-1 hover:underline hover:underline-offset-4"
-          href=""
+          href="https://github.com/HouseinIsProgramming/application-denominationcounter.git"
           target="_blank"
           rel="noopener noreferrer"
         >
