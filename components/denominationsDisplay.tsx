@@ -1,3 +1,4 @@
+"use client";
 import Coin from "@/components/Coin";
 import PaperBill from "@/components/paperbill";
 

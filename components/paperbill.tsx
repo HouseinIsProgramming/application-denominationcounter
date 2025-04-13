@@ -25,7 +25,7 @@ const PaperBill = ({ billValue, amountNeeded }: BillProps) => {
     >
       <div className="rounded-lg w-28 h-16 text-3xl text-center flex items-center justify-center text-neutral-600 font-serif italic">
         {billValue + "€"}
-        {typeof amountNeeded === "number" && amountNeeded > 1 && (
+        {typeof amountNeeded === "number" && amountNeeded >= 1 && (
           <Badge
             variant="secondary"
             className="absolute text-lg font-sans -inset-y-1 -right-2 w-fit h-6"
