@@ -52,7 +52,7 @@ export default function Home() {
     <div className="mx-auto mt-12 flex flex-col justify-center overflow-x-hidden min-h-screen max-w-lg   font-[family-name:var(--font-geist-sans)] shadow-xl shadow-black/20">
       <main className=" w-full row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
         <div className="px-20 space-y-4 mx-auto">
-          <h1 className="text-2xl lg:text-3xl">Euro-Wechselgeld-Rechner</h1>
+          <h1 className="text-2xl lg:text-3xl">Banknoten/Münzen Rechner</h1>
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Menge eingeben:</Label>
             <Input placeholder="€" onChange={handleInput} />
