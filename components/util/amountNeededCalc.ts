@@ -1,3 +1,5 @@
+"use client";
+
 export const calculateDenominations = (
   amount: number
 ): { [key: number]: number; change?: number } => {
@@ -28,4 +30,14 @@ export const calculateDenominations = (
   }
 
   return result;
+};
+
+export const totalDenominations = (denominations: {
+  [key: number]: number;
+}): number => {
+  return Object.entries(denominations)
+    .filter(([key]) => key !== "change")
+    .reduce((total, value) => {
+      return total + value[1];
+    }, 0);
 };

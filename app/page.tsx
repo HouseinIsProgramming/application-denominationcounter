@@ -5,7 +5,10 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import DenominationsDisplay from "@/components/denominationsDisplay";
-import { calculateDenominations } from "@/components/util/amountNeededCalc";
+import {
+  calculateDenominations,
+  totalDenominations,
+} from "@/components/util/amountNeededCalc";
 
 export default function Home() {
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -32,7 +35,7 @@ export default function Home() {
     const amount = parseFloat(input);
     if (amount >= 20000) {
       setErrorMessage(
-        "Darf ich fragen, warum du so eine große Summe bar bei dir hast?"
+        "Darf ich fragen, warum Sie so eine große Summe bar bei Ihnen haben?"
       );
     } else {
       setErrorMessage("");
@@ -41,6 +44,7 @@ export default function Home() {
     setDenominations(calculateDenominations(amount));
   };
 
+  const totalAmount = totalDenominations(denominations || {});
   return (
     <div className="mx-auto grid overflow-x-hidden min-h-screen max-w-lg  grid-rows-[20px_1fr_20px] items-center justify-items-center  pb-20 font-[family-name:var(--font-geist-sans)] shadow-xl shadow-black/20">
       <main className=" w-full row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
@@ -49,8 +53,14 @@ export default function Home() {
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Menge eingeben:</Label>
             <Input placeholder="€" onChange={handleInput} />
-            <p className="text-red-500 max-w-[270px] text-center mx-auto text-sm mt-1 h-12">
+            <p className="text-red-500 max-w-[270px] mb-4 text-center mx-auto text-sm mt-1 h-16">
               {errorMessage}
+              <br />
+              <span className="text-green-500 block">
+                {denominations && totalAmount > 0
+                  ? `Sie benötigen ${totalAmount} Euro Scheinen und Münzen.`
+                  : ""}
+              </span>
             </p>
           </div>
         </div>

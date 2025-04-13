@@ -73,7 +73,7 @@ function DenominationsDisplay({
   };
 
   return (
-    <div className="grid grid-cols-2 w-full outline-amber-500 outline mx-auto">
+    <div className="grid grid-cols-2 w-full  mx-auto">
       <div className="mr-auto gap-4 h-full flex-col flex justify-between">
         {leftColumn.map((item) => (
           <motion.div

@@ -21,22 +21,37 @@ const PaperBill = ({ billValue, amountNeeded, right }: BillProps) => {
 
   const billColor = billColors[billValue] || "bg-gray-200"; // Default to gray if denomination not found
 
+  // und wenn man viel Geld hat....
+  const formatAmount = (num: number): string => {
+    if (num > 1e9) {
+      return num.toExponential(2);
+    }
+    return parseFloat(num.toFixed(3)).toString();
+  };
+
+  const formattedAmount =
+    typeof amountNeeded === "number" ? formatAmount(amountNeeded) : "";
+
   return (
     <div
       className={`rounded-lg w-32 h-20 flex items-center justify-center relative ${billColor}`}
     >
-      <div className="rounded-lg w-28 h-16 text-3xl text-center flex items-center justify-center text-neutral-600 font-serif italic">
+      <div
+        className={clsx(
+          "rounded-lg w-28 h-16 text-3xl flex items-center text-neutral-600 font-serif italic",
+          right ? "justify-start items-end" : "justify-end mr-10"
+        )}
+      >
         {billValue + "€"}
         {typeof amountNeeded === "number" && amountNeeded >= 1 && (
           <Badge
             variant="secondary"
-            // className="absolute text-lg font-sans -inset-y-1 -right-2 w-fit h-6"
             className={clsx(
               "absolute text-lg font-sans -inset-y-1 w-fit h-6",
               right ? "right-24 text-right" : "-right-4"
             )}
           >
-            x{amountNeeded}
+            x{formattedAmount}
           </Badge>
         )}
       </div>
