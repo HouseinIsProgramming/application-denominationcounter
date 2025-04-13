@@ -8,7 +8,7 @@ import DenominationsDisplay from "@/components/denominationsDisplay";
 import { calculateDenominations } from "@/components/util/amountNeededCalc";
 
 export default function Home() {
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [denominations, setDenominations] = useState<null | {
     [key: number]: number;
     change?: number;
@@ -21,15 +21,24 @@ export default function Home() {
       setDenominations(null);
       return;
     }
+
     const isValid = /^\d+(\.\d{1,2})?$/.test(input);
     if (!isValid) {
       setErrorMessage("Bitte geben Sie einen gültigen Betrag ein.");
       setDenominations(null);
+      return;
+    }
+
+    const amount = parseFloat(input);
+    if (amount >= 20000) {
+      setErrorMessage(
+        "Darf ich fragen, warum du so eine große Summe bar bei dir hast?"
+      );
     } else {
       setErrorMessage("");
-      const amount = parseFloat(input);
-      setDenominations(calculateDenominations(amount));
     }
+
+    setDenominations(calculateDenominations(amount));
   };
 
   return (
@@ -41,7 +50,9 @@ export default function Home() {
             <Label>Menge eingeben:</Label>
             <Input placeholder="€" onChange={handleInput} />
             {errorMessage && (
-              <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
+              <p className="text-red-500 max-w-[270px] text-center mx-auto text-sm mt-1">
+                {errorMessage}
+              </p>
             )}
           </div>
         </div>
