@@ -5,26 +5,37 @@ import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import DenominationsDisplay from "@/components/denominationsDisplay";
+import { calculateDenominations } from "@/components/util/amountNeededCalc";
 
 export default function Home() {
   const [errorMessage, setErrorMessage] = useState("");
+  const [denominations, setDenominations] = useState<null | {
+    [key: number]: number;
+    change?: number;
+  }>(null);
 
   const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
     if (input === "") {
       setErrorMessage("");
+      setDenominations(null);
       return;
     }
     const isValid = /^\d+(\.\d{1,2})?$/.test(input);
-    setErrorMessage(
-      isValid ? "" : "Bitte geben Sie einen gültigen Betrag ein."
-    );
+    if (!isValid) {
+      setErrorMessage("Bitte geben Sie einen gültigen Betrag ein.");
+      setDenominations(null);
+    } else {
+      setErrorMessage("");
+      const amount = parseFloat(input);
+      setDenominations(calculateDenominations(amount));
+    }
   };
 
   return (
     <div className="mx-auto grid overflow-x-hidden min-h-screen max-w-lg  grid-rows-[20px_1fr_20px] items-center justify-items-center  pb-20 font-[family-name:var(--font-geist-sans)] shadow-xl shadow-black/20">
       <main className=" w-full row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
-        <div className="px-20 mx-auto">
+        <div className="px-20 space-y-4 mx-auto">
           <h1 className="text-2xl lg:text-3xl">Euro-Wechselgeld-Rechner</h1>
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Menge eingeben:</Label>
@@ -34,7 +45,7 @@ export default function Home() {
             )}
           </div>
         </div>
-        <DenominationsDisplay />
+        <DenominationsDisplay denominationsNeeded={denominations} />
       </main>
       <footer className="row-start-3 flex flex-wrap items-center justify-center gap-[24px]">
         <a
