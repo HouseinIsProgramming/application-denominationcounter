@@ -1,10 +1,26 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import Coin from "@/components/Coin";
-import PaperBill from "@/components/paperbill";
+import DenominationsDisplay from "@/components/denominationsDisplay";
 
 export default function Home() {
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    if (input === "") {
+      setErrorMessage("");
+      return;
+    }
+    const isValid = /^\d+(\.\d{1,2})?$/.test(input);
+    setErrorMessage(
+      isValid ? "" : "Bitte geben Sie einen gültigen Betrag ein."
+    );
+  };
+
   return (
     <div className="mx-auto grid overflow-x-hidden min-h-screen max-w-lg  grid-rows-[20px_1fr_20px] items-center justify-items-center  pb-20 font-[family-name:var(--font-geist-sans)] shadow-xl shadow-black/20">
       <main className=" w-full row-start-2 flex flex-col items-center gap-[32px] sm:items-start">
@@ -12,25 +28,13 @@ export default function Home() {
           <h1 className="text-2xl lg:text-3xl">Euro-Wechselgeld-Rechner</h1>
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Menge eingeben:</Label>
-            <Input placeholder="€" />
+            <Input placeholder="€" onChange={handleInput} />
+            {errorMessage && (
+              <p className="text-red-500 text-sm mt-1">{errorMessage}</p>
+            )}
           </div>
         </div>
-
-        <div className="grid grid-cols-2 w-full outline-amber-500 outline mx-auto">
-          <div className="mr-auto gap-4 h-full flex-col flex justify-between">
-            <Coin coinValue={2} />
-            <Coin coinValue={1} />
-            <PaperBill billValue={20} />
-            <PaperBill billValue={10} />
-            <PaperBill billValue={5} />
-          </div>
-          <div className="ml-auto h-full flex-col flex justify-between">
-            <PaperBill billValue={500} />
-            <PaperBill billValue={200} />
-            <PaperBill billValue={100} />
-            <PaperBill billValue={50} />
-          </div>
-        </div>
+        <DenominationsDisplay />
       </main>
       <footer className="row-start-3 flex flex-wrap items-center justify-center gap-[24px]">
         <a
